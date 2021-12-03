@@ -1,0 +1,3 @@
+[submodule "lib/chip_systems_cpp"]
+	path = lib/chip_systems_cpp
+	url = https://github.com/dniamir/chip_systems_cpp
