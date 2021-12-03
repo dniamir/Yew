@@ -1,6 +1,7 @@
 # include "Arduino.h"
 # include "Wire.h"
 # include "bmm150.h"
+# include "icm20649.h"
 
 /* LED Blink, Teensyduino Tutorial #1
    http://www.pjrc.com/teensy/tutorial.html
@@ -12,8 +13,11 @@
 // Teensy++ 2.0 has the LED on pin 6
 // Teensy 3.x / Teensy LC have the LED on pin 13
 const int ledPin = 13;
-bool check = false;
+bool bmm_check = false;
+bool imu_check = false;
+
 BMM150 bmm = BMM150();
+ICM20649 imu = ICM20649();
 
 // the setup() method runs once, when the sketch starts
 
@@ -26,7 +30,8 @@ void setup() {
 
   Wire.begin();
 
-  check = bmm.initialize();
+  bmm_check = bmm.initialize();
+  imu_check = imu.initialize();
 
 
 
@@ -40,8 +45,13 @@ void loop() {
     delay(200);                  // wait for a second
     digitalWrite(ledPin, LOW);    // set the LED off
     delay(200);                  // wait for a second
-    Serial.println("Test 2");
-    Serial.println(check);
+    Serial.println("BMM Check");
+    Serial.println(bmm_check);
+
+    Serial.println();
+
+    Serial.println("IMU Check");
+    Serial.println(imu_check);
 
     
     
