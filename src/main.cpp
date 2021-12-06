@@ -10,6 +10,7 @@
 const int ledPin = 13;
 bool bmm_check = false;
 bool imu_check = false;
+bool led_on = false;
 
 BMM150 bmm = BMM150();
 ICM20649 imu = ICM20649();
@@ -52,18 +53,18 @@ void setup() {
 
 void loop() {
 
-  // LED On
-  if (millis() - led_off_ms > 200){
+  // Turn LED On
+  if ((millis() - led_off_ms > 200) && !led_on){
     digitalWrite(ledPin, HIGH); 
     led_on_ms = millis();
-    led_off_ms = millis() + 1;
+    led_on = true;
   }
 
-  // LED Off
-  if (millis() - led_on_ms > 200){
+  // Turn LED Off
+  if ((millis() - led_on_ms > 200) && led_on){
     digitalWrite(ledPin, LOW); 
     led_off_ms = millis();
-    led_on_ms = millis() + 1;
+    led_on = false;
   }                 
 
   // BMI Check
