@@ -3,17 +3,23 @@
 # include "bmm150.h"
 # include "icm20649.h"
 # include "CDPA1616S.h"
+# include "arduino_i2c.h"
 
-// Teensy 2.0 has the LED on pin 11
-// Teensy++ 2.0 has the LED on pin 6
 // Teensy 3.x / Teensy LC have the LED on pin 13
 const int ledPin = 13;
 bool bmm_check = false;
 bool imu_check = false;
 bool led_on = false;
 
-BMM150 bmm = BMM150();
-ICM20649 imu = ICM20649();
+ArduinoI2C arduino_i2c;
+
+// Protocol *arduino_i2c_ptr = &arduino_i2c;
+// BMM150 bmm = BMM150(arduino_i2c_ptr);
+// ICM20649 imu = ICM20649(arduino_i2c_ptr);
+// CDPA1616S gps = CDPA1616S();
+
+BMM150 bmm = BMM150(arduino_i2c);
+ICM20649 imu = ICM20649(arduino_i2c);
 CDPA1616S gps = CDPA1616S();
 
 uint32_t gps_reading_ms = millis();
@@ -69,6 +75,7 @@ void loop() {
 
   // BMI Check
   if (millis() - mag_reading_ms > 1000){
+    bmm_check = bmm.initialize();
     Serial.println("BMM Check");
     Serial.println(bmm_check);
     Serial.println();
@@ -77,6 +84,7 @@ void loop() {
 
   // IMU Check
   if (millis() - imu_reading_ms > 1000){
+    imu_check = imu.initialize();
     Serial.println("IMU Check");
     Serial.println(imu_check);
     Serial.println();
